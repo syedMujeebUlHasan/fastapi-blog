@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% if title %} Fastapi Blog - {{ title }} {% else %} Fastapi Blog {% endif
+      %}
+    </title>
+
+    <meta name="description" content="FastAPI Sample" />
+    <meta name="author" content="Syed Mujeeb ul Hasan" />
+
+    <!-- Open Graph Tags: The title of the page for social media sharing. It can match the title tag or be more descriptive. -->
+    <meta property="og:title" content="FastAPI Blog" />
+
+    <!-- Open Graph Tags: Typically set to "website" for static sites or "article" for content-heavy pages. -->
+    <meta property="og:type" content="website" />
+
+    <!-- Open Graph Tags: The URL of the page, used to ensure link previews resolve to the correct page. -->
+    <meta property="og:url" content="" />
+
+    <!-- Open Graph Tags: URL of an image that represents the page. Useful for link previews. -->
+    <meta property="og:image" content="" />
+
+    <!-- Open Graph Tags: Provides an alternative text for the image to improve accessibility. -->
+    <meta property="og:image:alt" content="" />
+
+    <!-- Tailwind CDN -->
+    <link href="{{url_for('static',path='/css/app.css')}}" rel="stylesheet" />
+  </head>
+  <body>
+    {% block content %} {% endblock %}
+  </body>
+</html>

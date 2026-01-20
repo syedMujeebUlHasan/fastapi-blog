@@ -1,0 +1,59 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="max-w-3xl mx-auto py-10 px-6">
+  <!-- Back link -->
+  <a href="/" class="text-sm text-blue-600 hover:underline mb-6 inline-block">
+    ← Back to posts
+  </a>
+
+  <!-- Post Card -->
+  <article class="bg-white border border-gray-200 rounded-2xl shadow-md p-8">
+    <!-- Title -->
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ post.title }}</h1>
+
+    <!-- Meta info -->
+    <div class="flex items-center gap-4 text-sm text-gray-500 mb-6">
+      <span
+        >By
+        <span class="font-medium text-gray-700">{{ post.author }}</span></span
+      >
+      <span>•</span>
+      <span>{{ post.created_at }}</span>
+
+      {% if not post.published %}
+      <span
+        class="ml-auto bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs"
+      >
+        Draft
+      </span>
+      {% endif %}
+    </div>
+
+    <!-- Content -->
+    <div class="prose prose-lg max-w-none text-gray-800">
+      {{ post.content }}
+    </div>
+  </article>
+
+  <!-- Footer actions -->
+  <div class="flex justify-between items-center mt-8">
+    <a href="/" class="text-gray-600 hover:text-gray-900 text-sm">
+      ← All Posts
+    </a>
+
+    <div class="space-x-3">
+      <button
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm"
+      >
+        Edit
+      </button>
+      <button
+        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
