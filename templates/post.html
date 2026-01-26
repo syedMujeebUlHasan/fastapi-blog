@@ -15,10 +15,12 @@
     <div class="flex items-center gap-4 text-sm text-gray-500 mb-6">
       <span
         >By
-        <span class="font-medium text-gray-700">{{ post.author }}</span></span
+        <span class="font-medium text-gray-700"
+          >{{ post.author.username }}</span
+        ></span
       >
-      <span>•</span>
-      <span>{{ post.created_at }}</span>
+      <span>on</span>
+      <span>{{ post.date_posted.strftime("%B-%d-%Y") }}</span>
 
       {% if not post.published %}
       <span

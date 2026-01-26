@@ -1,0 +1,52 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="max-w-5xl mx-auto px-4 py-8">
+  <!-- User Header -->
+  <div class="bg-white shadow rounded-lg p-6 mb-8">
+    <h1 class="text-2xl font-bold text-gray-800">
+      {{ user.username }}'s Posts
+    </h1>
+    <p class="text-gray-500 mt-1">{{ posts|length }} posts published</p>
+  </div>
+
+  <!-- Posts List -->
+  {% if posts %}
+  <div class="grid gap-6">
+    {% for post in posts %}
+    <article class="bg-white shadow hover:shadow-lg transition rounded-lg p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-xl font-semibold text-gray-800">{{ post.title }}</h2>
+
+        {% if not post.published %}
+        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
+          Draft
+        </span>
+        {% endif %}
+      </div>
+
+      <p class="text-gray-600 mb-4 line-clamp-3">{{ post.content[:100] }}</p>
+
+      <div class="flex items-center justify-between text-sm text-gray-500">
+        <span>Author: {{ post.author.username }}</span>
+
+        <a
+          href="/posts/{{ post.id }}"
+          class="text-blue-600 hover:text-blue-800 font-medium"
+        >
+          Read more →
+        </a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <!-- Empty State -->
+  <div class="text-center text-gray-500 py-16">
+    <p class="text-lg">No posts yet.</p>
+    <p class="text-sm mt-1">When this user publishes, they’ll appear here.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
