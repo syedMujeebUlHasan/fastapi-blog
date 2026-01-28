@@ -1,0 +1,99 @@
+<!-- Edit Post Modal -->
+<div
+  id="edit-modal"
+  class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+>
+  <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Edit Post</h2>
+
+    <!-- Form -->
+    <form id="edit-post-form" class="space-y-4">
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Title</label>
+        <input
+          type="text"
+          id="edit-title"
+          name="title"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500"
+          required
+        />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Content</label>
+        <textarea
+          id="edit-content"
+          name="content"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500"
+          rows="5"
+          required
+        ></textarea>
+      </div>
+
+      <div class="flex items-center space-x-3 justify-end">
+        <!-- Cancel -->
+        <button
+          type="button"
+          onclick="closeEditModal()"
+          class="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100"
+        >
+          Cancel
+        </button>
+
+        <!-- Save -->
+        <button
+          type="submit"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const editModal = document.getElementById("edit-modal");
+  const editForm = document.getElementById("edit-post-form");
+
+  // Open modal and populate fields
+  function openEditModal(postId, title, content) {
+    editModal.classList.remove("hidden");
+    document.getElementById("edit-title").value = title;
+    document.getElementById("edit-content").value = content;
+
+    // attach submit listener with correct postId
+    editForm.onsubmit = async function (e) {
+      e.preventDefault();
+      await submitEdit(postId);
+    };
+  }
+
+  // Close modal
+  function closeEditModal() {
+    editModal.classList.add("hidden");
+  }
+
+  // Submit form to PATCH API
+  async function submitEdit(postId) {
+    const title = document.getElementById("edit-title").value;
+    const content = document.getElementById("edit-content").value;
+
+    const response = await fetch(`/api/posts/${postId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, content }),
+    });
+
+    if (response.ok) {
+      closeEditModal();
+      // optionally reload page or update DOM dynamically
+      location.reload();
+    } else {
+      const error = await response.json();
+      alert("Error updating post: " + error.detail);
+    }
+  }
+</script>

@@ -45,11 +45,13 @@
 
     <div class="space-x-3">
       <button
+        onclick="openEditModal({{ post.id }}, '{{ post.title | escape }}', '{{ post.content | escape }}')"
         class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm"
       >
         Edit
       </button>
       <button
+        onclick="openDeleteModal({{ post.id }})"
         class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm"
       >
         Delete
@@ -58,4 +60,5 @@
   </div>
 </div>
 
-{% endblock %}
+{% include 'modals/delete_post.html' %} {% include 'modals/edit_post.html' %} {%
+endblock %}

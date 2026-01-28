@@ -1,0 +1,121 @@
+<!-- Create Post Modal -->
+<div
+  id="createPostModal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50"
+>
+  <!-- Modal box -->
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+    <h2 class="text-xl font-semibold mb-4">Create Post</h2>
+
+    <!-- Error message -->
+    <p id="createPostError" class="hidden text-red-600 text-sm mb-3"></p>
+
+    <form id="createPostForm" class="space-y-4">
+      <!-- Title -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Title</label>
+        <input
+          type="text"
+          name="title"
+          required
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+        />
+      </div>
+
+      <!-- Content -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Content</label>
+        <textarea
+          name="content"
+          rows="4"
+          required
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+        ></textarea>
+      </div>
+
+      <!-- Published -->
+      <div class="flex items-center gap-2">
+        <input type="checkbox" name="published" id="published" />
+        <label for="published" class="text-sm">Published</label>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-2">
+        <button
+          type="button"
+          onclick="closeCreatePostModal()"
+          class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+        >
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById("createPostModal");
+  const form = document.getElementById("createPostForm");
+  const errorBox = document.getElementById("createPostError");
+
+  function openCreatePostModal() {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  }
+
+  function closeCreatePostModal() {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    form.reset();
+    errorBox.classList.add("hidden");
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    const payload = {
+      title: formData.get("title"),
+      content: formData.get("content"),
+      published: formData.get("published") === "on",
+      user_id: {{ 4 }},
+    };
+
+    try {
+      const response = await fetch("/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.detail || "Failed to create post");
+      }
+
+      // Success → reload or redirect
+      closeCreatePostModal();
+      window.location.reload(); // simplest option
+    } catch (err) {
+      errorBox.textContent = err.message;
+      errorBox.classList.remove("hidden");
+    }
+  });
+
+  // Close modal when clicking backdrop
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeCreatePostModal();
+    }
+  });
+</script>

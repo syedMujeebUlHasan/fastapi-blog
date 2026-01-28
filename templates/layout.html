@@ -26,10 +26,73 @@
     <!-- Open Graph Tags: Provides an alternative text for the image to improve accessibility. -->
     <meta property="og:image:alt" content="" />
 
-    <!-- Tailwind CDN -->
-    <link href="{{url_for('static',path='/css/app.css')}}" rel="stylesheet" />
+    <!-- Tailwind -->
+    <link href="{{url_for('static',path='./css/app.css')}}" rel="stylesheet" />
   </head>
   <body>
-    {% block content %} {% endblock %}
+    <!-- NAVBAR -->
+    <nav class="bg-white w-full shadow-sm">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+          <!-- LEFT: Logo -->
+          <div class="shrink-0">
+            <a href="/" class="text-2xl font-bold text-gray-800"
+              >FastAPI Blog</a
+            >
+          </div>
+
+          <!-- CENTER: Desktop Links -->
+          <div class="hidden md:flex space-x-12 flex-1 justify-center">
+            <a href="/" class="text-gray-600 font-bold hover:text-gray-900"
+              >Home</a
+            >
+            <a href="/posts" class="text-gray-600 font-bold hover:text-gray-900"
+              >Posts</a
+            >
+            <a href="/users" class="text-gray-600 font-bold hover:text-gray-900"
+              >Users</a
+            >
+          </div>
+
+          <!-- RIGHT: Buttons -->
+          <div class="flex items-center space-x-3">
+            {% if user %}
+            <button
+              onclick="openCreatePostModal()"
+              class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700"
+            >
+              Create Post
+            </button>
+
+            <span class="text-gray-600 font-bold text-sm"
+              >Hi, {{ user.username }}</span
+            >
+
+            <a
+              href="/logout"
+              class="text-red-600 hover:text-red-700 font-bold text-sm"
+              >Logout</a
+            >
+            {% else %}
+            <a
+              href="/register"
+              class="text-gray-600 hover:text-gray-900 font-bold text-sm"
+              >Register</a
+            >
+            <a
+              href="/login"
+              class="text-gray-600 hover:text-gray-900 font-bold text-sm"
+              >Login</a
+            >
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-4">{% block content %}{% endblock %}</main>
+
+    <!-- Create Post Form Handler -->
+    {% include 'modals/create_post.html' %}
   </body>
 </html>
